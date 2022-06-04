@@ -1,0 +1,97 @@
+import java.util.*;
+
+public class Heap {
+    List<Integer> list;
+    int capacity;
+    int size=0;
+    Heap(){list=new ArrayList<>();}
+    Heap(int size){
+        capacity=size;
+        list=new ArrayList<>(size);
+    }
+    public void insert(int data){
+       insert(data,size());
+    }
+    public void insert(int data, int size){
+        list.add(size,data);
+        int i=size;
+        this.size++;
+        while (i>=0){
+            //int parent=i/2;
+            if(list.get(i/2)<list.get(i)){
+                //MoveUp
+                move(i/2,i);
+                i=i/2;
+            }else{
+                return;
+            }
+        }
+    }
+    public void delete(){
+        delete(list.get(0));
+    }
+    public void delete(int node){
+        if(!isEmpty()){
+            if(search(node)){
+                if(list.indexOf(node)+1==list.size()){ list.set(list.size()-1,null); return; }
+                int i=list.indexOf(node);
+                list.set(list.indexOf(node),list.get(list.size()-1));
+                list.set(list.size()-1,null);
+                //size--;
+                while (i< list.size() && ((i*2)+1)<size && ((i*2)+2)<size){
+                    int left=list.get((i*2)+1);
+                    int right=list.get((i*2)+2);
+                    int larger=(left<right)? (i*2)+2:(i*2)+1;
+                    if(list.get(i)<list.get(larger)){
+                        move(i,larger);
+                        i=larger;
+                    }
+                }
+            }
+        }
+    }
+    private void move(int i,int j){
+        Collections.swap(list,i,j);
+    }
+    public boolean isEmpty(){
+        return list.isEmpty();
+    }
+    public int size(){
+        return size;
+    }
+    boolean search(int data){
+        return list.indexOf(data)!=-1;
+    }
+    public static void main(String[] args){
+        Random rand=new Random();
+        Heap heap=new Heap();
+        heap.insert(50);
+        heap.insert(40);
+        heap.insert(60);
+        heap.insert(30);
+        heap.insert(5);
+        heap.insert(51);
+        heap.insert(12);
+        heap.insert(20);
+        heap.insert(10);
+        heap.insert(11);
+        heap.delete(60);
+    }
+
+}
+
+public class Node {
+    Node left;
+    Node right;
+    Node prevRoot;
+    int data;
+    Node(int data){
+        this.data=data;
+        left=null;
+        right=null;
+        prevRoot=null;
+    }
+    public String toString(){
+        return "Data: "+data;
+    }
+}
