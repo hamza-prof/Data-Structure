@@ -1,0 +1,161 @@
+public class BinarySearchTree {
+    Node root;
+    BinarySearchTree(int key){
+        root=new Node(key);
+    }
+    BinarySearchTree(){
+        root=null;
+    }
+
+    public void addData(int data){
+        Node newNode=new Node(data);
+        if(root==null)
+        {
+            this.root=newNode;
+            return;
+        }
+        Node current=root;
+        Node prev=null;
+        while (current!=null){
+            prev=current;
+            if(data<current.data){
+                current= current.left;
+            }else if(data>current.data){
+                current=current.right;
+            }else{
+                System.out.println("Dublicate value occur");
+                break;
+            }
+        }
+        if (data< prev.data){
+            prev.left=newNode;
+            newNode.prevRoot=prev;
+        }else if(data> prev.data){
+            prev.right=newNode;
+            newNode.prevRoot=prev;
+        }else{
+            System.out.println("Dublicate value occur");
+        }
+    }
+    public Node delete(int data){
+        return delete(root,data);
+    }
+    public Node delete(Node root,int data){
+        if(root==null) return null;
+        if(data< root.data){
+            root.left=delete(root.left,data);
+        }else if(data>root.data){
+            root.right=delete(root.right,data);
+        }else{
+            if(root.left==null){
+                return root.right;
+            }else if(root.right==null){
+                return root.left;
+            }
+            root.data=findMin(root.right).data;
+            root.right=delete(root.right,root.data);
+        }
+        return root;
+    }
+    public void preOrder(){
+        preOrder(root);
+    }
+    public void preOrder(Node root){
+        if(root==null) return;
+        System.out.print(root.data+" ");
+        preOrder(root.left);
+        preOrder(root.right);
+    }
+    public void inOrder(){
+        inOrder(root);
+    }
+    public void inOrder(Node root){
+        if(root!=null){
+            inOrder(root.left);
+            System.out.print(root.data+" ");
+            inOrder(root.right);
+        }
+    }
+    public Node findMax(){
+        return findMax(root);
+    }
+    public Node findMax(Node root){
+        if(root==null) return null;
+        while (root.right!=null){
+            root=root.right;
+        }
+        return root;
+    }
+    public Node findMin(){
+        return findMin(root);
+    }
+    public Node findMin(Node root){
+        if(root==null) return null;
+        root=root.left;
+        while (root.left!=null){
+            root=root.left;
+        }
+        return root;
+    }
+    public void postOrder(){
+        postOrder(root);
+    }
+    public void postOrder(Node root){
+        if (root==null) return;
+        postOrder(root.left);
+        postOrder(root.right);
+        System.out.print(root.data+" ");
+    }
+
+    private Node search(Node root,int num){
+        if(root==null){
+            return null;
+        }
+        else if(num<root.data){
+            return search(root.left,num);
+        }else if(num>root.data){
+            return search(root.right,num);
+        }else if(num==root.data){
+            return root;
+        }else{
+            return root.prevRoot;
+        }
+    }
+    public boolean search(int num){
+        boolean value=false;
+        if(search(root,num)==null){
+            value=false;
+        }else if(search(root,num).data==num){
+            value=true;
+        }
+        return value;
+    }
+    public static void main(String [] args){
+        BinarySearchTree tree=new BinarySearchTree(100);
+        tree.addData(50);
+        tree.addData(55);
+        tree.addData(60);
+        tree.addData(65);
+        tree.addData(10);
+        tree.addData(70);
+        tree.addData(80);
+        tree.addData(20);
+        tree.addData(5);
+        tree.addData(150);
+        tree.addData(120);
+        tree.addData(160);
+        tree.inOrder();
+        System.out.println();
+        tree.preOrder();
+        System.out.println();
+        tree.postOrder();
+        System.out.println();
+        System.out.println(tree.search(65));
+        System.out.println(tree.findMax());
+        System.out.println(tree.findMin());
+        System.out.println(tree.search(5));
+        System.out.println(tree.findMax(tree.root.left));
+        System.out.println(tree.findMin(tree.root.right));
+        tree.delete(65);
+    }
+}
