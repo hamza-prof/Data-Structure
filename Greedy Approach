@@ -1,0 +1,196 @@
+import java.util.*;
+import java.util.Stack;
+
+public class GreedyApproach {
+    Stack<Integer> route=new Stack<>();
+    public int findMax(ArrayList<Integer> arr){
+        Collections.sort(arr,Collections.reverseOrder());
+        int val=0;
+        if(arr.get(0)==-1){
+            System.out.println("You lose");
+            i=row;
+            j=col;
+        }else{
+            val=arr.get(0);
+            System.out.println(" Go to "+ val);
+            route.push(val);
+        }
+        return val;
+    }
+    public int[] findIndex(int[][]arr,int max,int row,int col){
+        int index[]=new int[2];
+        for(int k=0;k<row;k++){
+            for(int l=0;l<col;l++){
+                if(max==arr[k][l]){
+                    index[0]=k;
+                    index[1]=l;
+                    break;
+                }
+            }
+            //if()
+        }
+        return index;
+    }
+    int i=0;
+    int j=0;
+    public void isfind(int arr[][],int row,int col){
+        int max=0;
+        ArrayList<Integer> list=new ArrayList<>();
+        while (i<row){
+            while (j<col){
+                try{
+                    if((i==0 && j==0) || (i==0 && j==col-1) || (i==row-1 && j==0)){
+                        if((i==0 && j==0)){
+                            list.add(arr[i][j+1]);
+                            list.add(arr[i+1][j]);
+                            list.add(arr[i+1][j+1]);
+                        }else if((i==row-1 && j==0)){
+                            list.add(arr[i][j+1]);
+                            list.add(arr[i-1][j]);
+                            list.add(arr[i+1][j+1]);
+                        }else if((i==0 && j==col-1)){
+                            list.add(arr[i][j-1]);
+                            list.add(arr[i+1][j]);
+                            list.add(arr[i+1][j-1]);
+                        }
+                        max=findMax(list);
+                        if(max==0){
+                            break;
+                        }else{
+                            int a[]=findIndex(arr,max,row,col);
+                            i=a[0];
+                            j=a[1];
+                            arr[i][j]=-1;
+                            list.clear();
+                        }
+                    }
+                    if((i==0 && j!=0 && j!=col-1) || (j==0 && i!=0 && i!=row-1) || (i==row-1 && j!=0 && j!=col-1) || (j==col-1 && i!=0 && i!=row-1)){
+                        if(i==0 && j!=0 && j!=col-1){
+                            list.add(arr[i][j+1]);
+                            list.add(arr[i][j-1]);
+                            list.add(arr[i+1][j]);
+                            list.add(arr[i+1][j-1]);
+                            list.add(arr[i+1][j+1]);
+                            if(findMax(list)==0){
+                                break;
+                            }else{
+                                max=findMax(list);
+                                int a[]=findIndex(arr,max,row,col);
+                                i=a[0];
+                                j=a[1];
+                                arr[i][j]=-1;
+                                list.clear();
+                            }
+                        }
+                        if(j==0 && i!=0 && i!=row-1){
+                            list.add(arr[i][j+1]);
+                            list.add(arr[i+1][j]);
+                            list.add(arr[i+1][j+1]);
+                            list.add(arr[i-1][j+1]);
+                            list.add(arr[i-1][j]);
+                            max=findMax(list);
+                            if(max==0){
+                                break;
+                            }else{
+                                int a[]=findIndex(arr,max,row,col);
+                                i=a[0];
+                                j=a[1];
+                                arr[i][j]=-1;
+                                list.clear();
+                            }
+                        }
+                        if(i==row-1 && j!=0 && j!=col-1){
+                            list.add(arr[i][j+1]);
+                            list.add(arr[i][j-1]);
+                            list.add(arr[i-1][j-1]);
+                            list.add(arr[i-1][j+1]);
+                            list.add(arr[i-1][j]);
+                            max=findMax(list);
+                            if(max==0){
+                                break;
+                            }else{
+                                int a[]=findIndex(arr,max,row,col);
+                                i=a[0];
+                                j=a[1];
+                                arr[i][j]=-1;
+                                list.clear();
+                            }
+                        }
+                        if(j==col-1 && i!=0 && i!=row-1){
+                            list.add(arr[i+1][j]);
+                            list.add(arr[i+1][j-1]);
+                            list.add(arr[i][j-1]);
+                            list.add(arr[i-1][j-1]);
+                            list.add(arr[i-1][j]);
+                            max=findMax(list);
+                            if(max==0){
+                                break;
+                            }else{
+                                int a[]=findIndex(arr,max,row,col);
+                                i=a[0];
+                                j=a[1];
+                                arr[i][j]=-1;
+                                list.clear();
+                            }
+                        }
+                    }
+                    if(!((i==0 && j!=0 && j!=col-1) || (j==0 && i!=0 && i!=row-1) || (i==row-1 && j!=0 && j!=col-1) || (j==col-1 && i!=0 && i!=row-1) && (i==0 && j==0) || (i==0 && j==col-1) || (i==row-1 && j==0))){
+                        list.add(arr[i][j+1]);
+                        list.add(arr[i+1][j]);
+                        list.add(arr[i+1][j+1]);
+                        list.add(arr[i][j-1]);
+                        list.add(arr[i+1][j-1]);
+                        list.add(arr[i-1][j-1]);
+                        list.add(arr[i-1][j]);
+                        list.add(arr[i-1][j+1]);
+                        max=findMax(list);
+                        if(max==0){
+                            break;
+                        }else{
+                            int a[]=findIndex(arr,max,row,col);
+                            i=a[0];
+                            j=a[1];
+                            arr[i][j]=-1;
+                            list.clear();
+                        }
+                    }
+                }catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("You Won");
+                    i=row;
+                    j=col;
+                    break;
+                }
+            }
+        }
+
+    }
+    static int row;
+    static int col;
+    public static void main(String[] args){
+        GreedyApproach greedyApproach=new GreedyApproach();
+        Random random=new Random();
+        row=new Scanner(System.in).nextInt();
+        col=new Scanner(System.in).nextInt();
+        int [][] arr=new int[row][col];
+        for(int i=0;i< row;i++){
+            for(int j=0;j< col;j++){
+                arr[i][j]=1+random.nextInt(99);
+            }
+        }
+        int b=(row*col)/2;
+        //System.out.println(b);
+        for(int i=0;i<b;i++) {
+            arr[random.nextInt(row)][random.nextInt(col)] = -1;
+        }
+        arr[0][0]=0;
+        arr[row-1][col-1]=100;
+        for(int i=0;i< row;i++){
+            for(int j=0;j< col;j++){
+                System.out.print(arr[i][j]+" ");
+            }
+            System.out.println();
+        }
+        greedyApproach.isfind(arr,row,col);
+        //System.out.println(greedyApproach.route.pop());
+    }
+}
